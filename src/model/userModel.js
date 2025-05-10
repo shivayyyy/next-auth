@@ -28,7 +28,7 @@ const userSchema=new mongoose.Schema({
         type: String,
         default: null,
     },
-    fpExpiry: {
+    fpTokenExpiry: {
         type: Date,
         default: null,
     },

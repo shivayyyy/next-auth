@@ -2,10 +2,12 @@
 import { useRouter } from "next/navigation"
 import axios from "axios"
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function HomePage() {
   const router=useRouter();
+
+ 
   const handleLogout=async ()=>{
     try {
       await axios.get("/api/user/logout")
@@ -16,10 +18,25 @@ export default function HomePage() {
     }
   }
 
-const handleUser=async()=>{
-  const info=await axios.get('/api/user/selfData')
-  console.log(info)
-}
+  useEffect(() => {
+    const fetchId = async () => {
+      try {
+        const response = await axios.get('/api/user/selfData');
+        
+        const newId=response.data.data._id;
+        const userName=response.data.data.name;
+        console.log(userName)
+       
+        router.push(`/profile/${newId}/${userName}`)
+        
+      } catch (error) {
+        console.error('Error fetching ID', error);
+      }
+    };
+    fetchId();
+}, []
+     
+)
 
  
     return (
@@ -47,12 +64,7 @@ const handleUser=async()=>{
       >
         Logout
       </button>
-          <button
-        onClick={handleUser}
-        className="bg-yellow-600 text-white px-4 py-2 rounded hover:bg-red-700 transition"
-      >
-        view profile
-      </button>
+      
             </div>
           </div>
         </div>
